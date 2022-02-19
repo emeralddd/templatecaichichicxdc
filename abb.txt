@@ -1,0 +1,187 @@
+/**
+darkemeralddd
+**/
+#pragma GCC optimize("O3")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
+#pragma GCC optimize("unroll-loops")
+#include <bits/stdc++.h>
+#define l2 long long
+#define st first
+#define nd second
+#define ll2 pair<l2,l2> 
+#define ii pair<int,int> 
+#define iii pair<int,ii>
+#define il2 pair<int,l2>
+#define l2i pair<l2,int>
+#define emerald ""
+#define memset(a,b) memset(a,b,sizeof(a))
+#define ladd(a) a=" "+a
+#define bit(x,y) (((y)>>(x))&1)
+#define infinity() for(;;)
+const l2 mod = 1000000007;
+using namespace std;
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+
+//    freopen(emerald".INP","r",stdin);
+//    freopen(emerald".OUT","w",stdout);
+
+}
+
+l2 amb(l2 A,l2 N) {
+    if(N==0) return 1;
+    l2 temp=amb(A,N>>1);
+    temp=(temp*temp)%mod;
+    if(N&1) temp=(temp*A)%mod;
+    return temp;
+}
+
+int getsum(int p) {
+    int ans = 0;
+    while(p>0) {
+        ans+=bit[p];
+        idx-=(p&(-p));
+    }
+    return ans;
+}
+void update(int u,int v) {
+    while(u<=n) {
+        bit[p]+=v;
+        p+=(p&(-p));
+    }
+}
+
+int par[L+5];
+int root(int n) {
+    if(par[n]!=n) par[n]=root(par[n]);
+    return par[n];
+}
+bool join(int x,int y) {
+    x=root(x); y=root(y);
+    if(x==y) return 0;
+    par[x]=y;
+    return 1;
+}
+for(int i=1; i<=n; i++) {
+    p[i]=i;
+}
+
+struct it {
+    int val,lazy,len;
+    void it() {
+        val=lazy=len=0;
+    }
+} st[L+2<<2],ZERO;
+it mix(it A,it &B) {
+    A.len+=B.len;
+    A.lazy=0;
+    A.val+=B.val;
+    return A;
+}
+void build(int id,int l,int r) {
+    if(l==r) {
+        st[id].val=0;
+        st[id].lazy=0;
+        st[id].len=0;
+        return;
+    }
+    int m=l+r>>1;
+    build(id<<1,l,m);
+    build(id<<1|1,m+1,r);
+    st[id]=mix(st[id<<1],st[id<<1|1]);
+}
+void update(int id,int l,int r,int u,int v,int x) {
+    if(v<l||r<u) return;
+    if(u<=l&&r<=v) {
+        st[id].lazy=;
+        st[id].val+=;
+        return;
+    }
+
+    int m=l+r>>1;
+    update(id<<1,l,m,u,v,x);
+    update(id<<1|1,m+1,r,u,v,x);
+
+    st[id]=mix(st[id<<1],st[id<<1|1]);
+}
+it getresult(int id,int l,int r,int u,int v) {
+    if(v<l||r<u) return ZERO;
+    if(u<=l&&r<=v) {
+        return st[id];
+    }
+
+    int m=l+r>>1;
+    return mix(getresult(id<<1,l,m,u,v),getresult(id<<1|1,m+1,r,u,v));
+}
+
+struct it {
+    int val,lazy,len;
+    void it() {
+        val=lazy=len=0;
+    }
+} st[L+2<<2],ZERO;
+it mix(it A,it &B) {
+    A.len+=B.len;
+    A.lazy=0;
+    A.val+=B.val;
+    return A;
+}
+void build(int id,int l,int r) {
+    if(l==r) {
+        st[id].val=0;
+        st[id].lazy=0;
+        st[id].len=0;
+        return;
+    }
+    int m=l+r>>1;
+    build(id<<1,l,m);
+    build(id<<1|1,m+1,r);
+    st[id]=mix(st[id<<1],st[id<<1|1]);
+}
+void down(int id) {
+    int temp=st[id].lazy;
+
+    st[id<<1].val+=temp;
+    st[id<<1].lazy+=temp;
+
+    st[id<<1|1].val+=temp;
+    st[id<<1|1].lazy+=temp;
+
+    st[id].lazy=0;
+}
+void update(int id,int l,int r,int u,int v,int x) {
+    if(v<l||r<u) return;
+    if(u<=l&&r<=v) {
+        st[id].lazy=;
+        st[id].val+=;
+        return;
+    }
+    down(id);
+
+    int m=l+r>>1;
+    update(id<<1,l,m,u,v,x);
+    update(id<<1|1,m+1,r,u,v,x);
+
+    st[id]=mix(st[id<<1],st[id<<1|1]);
+}
+it getresult(int id,int l,int r,int u,int v) {
+    if(v<l||r<u) return ZERO;
+    if(u<=l&&r<=v) {
+        return st[id];
+    }
+    down(id);
+
+    int m=l+r>>1;
+    return mix(getresult(id<<1,l,m,u,v),getresult(id<<1|1,m+1,r,u,v));
+}
+
+bool pr[L+5];
+void es() {
+    memset(pr,1);
+    pr[0]=pr[1]=0;
+    for(int i=2; i<=sqrt(L); i++)
+        if(pr[i]) 
+            for(int j=i*i; j<=L; j+=i) 
+                pr[j]=0;
+} 
