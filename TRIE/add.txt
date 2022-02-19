@@ -1,0 +1,30 @@
+///============================================
+//add xâu 
+void add(string z)
+{
+    int vt = 1;
+    for (int i = 0; i < z.size(); i++)
+    {
+        if ( !trie[vt][z[i]-'a'+1] ) trie[vt][z[i]-'a'+1] = ++node;
+        vt = trie[vt][z[i]-'a'+1];
+    }
+    d[vt] = 1;
+}
+
+
+///===========================================
+//add số
+void add(int x)
+{
+    int vt = 1;
+    for (int i = 30; i >= 0; i--)
+    {
+        if (!trie[vt][((x>>i)&1)]) trie[vt][((x>>i)&1)] = ++node;
+        vt = trie[vt][((x>>i)&1)];
+    }
+    //d[vt] = 1;
+}
+
+// chú thích :
+// trie[i][j] là nút tiếp theo của nút i theo cạnh có trọng số là j
+// d[vt] là đánh dấu vt là nút lá hoặc là số lượng xâu kết thúc ở vt (tùy đề bài).

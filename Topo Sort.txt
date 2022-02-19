@@ -1,0 +1,37 @@
+///===========================================
+int n , m , u[200005], v[200005] , kt[100005];
+vector<int>g[100005],tp;
+///===========================================
+void topo(int x)
+{
+    d[x] = 1;
+    for(auto gt : g[x])
+    {
+        if (d[gt] && !kt[gt])
+        {
+            cout << "!DAG";//ko có trật tự topo
+            exit(0);
+        }
+        if (!d[gt]) topo(gt);
+    }
+    tp.push_back(x);
+    kt[x] = 1;
+}
+///===========================================
+int main()
+{
+    pk(); rose();
+    cin >> n >> m;
+    for (int i = 1; i <= m; i++)
+    {
+        cin >> u[i] >> v[i];
+        g[u[i]].push_back(v[i]);
+    }
+    for (int i = 1; i <= n; i++)
+        if (!d[i]) topo(i);
+    
+    reverse(tp.begin(),tp.end());
+    for (auto gt : tp)
+        cout << gt <<" ";
+}
+///===========================================

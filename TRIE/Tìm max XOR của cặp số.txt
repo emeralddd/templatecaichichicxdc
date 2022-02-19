@@ -1,0 +1,61 @@
+///===========================================
+int n , a, node = 1 , trie[5000005][3];
+ll kq = 0;
+///===========================================
+void add(int x)
+{
+    int vt = 1;
+    for (int i = 30; i >= 0; i--)
+    {
+        if (!trie[vt][((x>>i)&1)]) trie[vt][((x>>i)&1)] = ++node;
+        vt = trie[vt][((x>>i)&1)];
+    }
+    //d[vt] = 1;
+}
+///===========================================
+///===========================================
+///===========================================
+///===========================================
+int main()
+{
+    //thuật toán : với mỗi i, ta phải tạo cây trie với i-1 phần tử trước đó
+    // đi từ gốc của cây trie, nếu bit thứ j của a[i] là 0 thì cạnh của cây phải là 1 (nếu có), ngược lại (bit j của a[i] là 1) thì cạnh cây phải là 0 (nếu có)
+    cin >> n;
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> a;
+        if ( i > 1 )
+        {
+            int vv = 1;
+            ll so = 0;
+            for (int j = 30; j >= 0; j--)
+            {
+                if ( ((a>>j)&1) )
+                {
+                    //cout << j <<" ";
+                    if ( trie[vv][0] )
+                    {
+                        so+=1<<j;
+                        vv = trie[vv][0];
+                    }
+                    else vv = trie[vv][1];
+                }
+                else
+                {
+                    if ( trie[vv][1] )
+                    {
+                        so += (1<<j);
+                        vv = trie[vv][1];
+                    }
+                    else vv = trie[vv][0];
+                }
+            }
+            //cout <<"\n";
+            //cout << so <<"\n\n";
+            kq = max ( kq , so );
+        }
+        add(a);
+    }
+    cout << kq;
+}
+///===========================================

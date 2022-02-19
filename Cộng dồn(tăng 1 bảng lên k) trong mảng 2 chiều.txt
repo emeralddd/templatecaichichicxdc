@@ -1,0 +1,9 @@
+void add(int x,int y,int u,int v,const int val)
+{
+	if (x>u || y>v) return ;
+	f[x][y]+=val;f[u+1][v+1]+=val;
+	f[x][v+1]-=val;f[u+1][y]-=val;
+}
+for (int i=1;i<=m+n+base;i++)
+		for (int j=1;j<=m-1+base;j++)
+			f[i][j]=f[i-1][j]+f[i][j-1]-f[i-1][j-1]+f[i][j];

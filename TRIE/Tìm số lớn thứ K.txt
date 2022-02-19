@@ -1,0 +1,49 @@
+///===========================================
+void add(int z)
+{
+    int vt = 1;
+    for (int i = 30; i >= 0; i--)
+    {
+        if (!trie[vt][(z>>i)&1]) trie[vt][(z>>i)&1] = ++node;
+        vt = trie[vt][(z>>i)&1];
+    }
+    d[vt] ++;
+}
+///===========================================
+void cb(int vv) // đếm số lượng số được tạo ra nếu đi từ đỉnh vv ( f[vv] )
+{
+    for (int i = 0; i <= 1; i++)
+        if ( trie[vv][i] )
+        {
+            cb(trie[vv][i]);
+            f[vv] += f[trie[vv][i]];
+        }
+    f[vv] += d[vv];
+}
+///===========================================
+int tim(int vv) // tìm số lớn thứ vv
+{
+	
+	// Vì ta đang tìm số lớn thứ K nên ta phải ưu tiên đi từ bit 30 (bit cuối) và đi theo đường bit 1
+	// Gọi sl1 là sl1 số lớn nhất (đi theo đường bit 1) và sl2 là sl2 số bé nhất (đi theo đường bit 0). 
+	// Nếu sl1 >= k thì k nằm trong sl1 số lớn nhất -> ko cần sl2 số bé nhất -> k không thay đổi và đi theo đường bit 1
+	// Ngược lại, k nằm trong sl2 số nhỏ nhất -> k = k - sl1 (vì ta phải bỏ sl1 số lớn nhất và đánh số thứ tự lại cho sl2 số bé nhất)
+	// Tiếp tục làm cho đến lá -> kết quả cuối cùng.
+
+    int vt = 1 , so = 0;
+    for (int i = 30; i >= 0; i--)
+    {
+        if ( f[trie[vt][1]] >= vv )
+        {
+           so += (1<<i);
+           vt = trie[vt][1];
+        }
+        else
+        {
+           vv -= f[trie[vt][1]];
+           vt = trie[vt][0];
+        }
+    }
+    return so;
+}
+///===========================================

@@ -1,0 +1,57 @@
+///===========================================
+int n , node = 1  , trie[3000005][28];
+ll kq = 0, d[3000005] , f[100005];
+string s[10005] , x;
+///===========================================
+void add(string z) // thêm ngược xâu trong tập vì ta cần kiểm tra từ i -> j với j <= i
+{
+    int vt = 1;
+    for (int i = z.size()-1; i >= 0; i--)
+    {
+        if (!trie[vt][z[i]-'a'+1]) trie[vt][z[i]-'a'+1] = ++node;
+        vt = trie[vt][z[i]-'a'+1];
+    }
+    d[vt] = 1;
+}
+///===========================================
+bool tim(string z)
+{
+    int vt = 1;
+    for (int i = z.size()-1; i >= 0; i--)
+    {
+        if (!trie[vt][z[i]-'a'+1]) return false;
+        vt = trie[vt][z[i]-'a'+1];
+    }
+    return d[vt];
+}
+///===========================================
+///===========================================
+///===========================================
+int main()
+{
+    // f[i] là số cách tách xâu đến vị trí thứ i
+    // Với mỗi vị trí i (1 -> x.size()) và vị trí j (i->1) kiểm tra xem xâu j...i có thuộc tập đã cho hay ko
+    // Nếu có thì f[i] cộng vào số cách tách xâu đến vị trí j-1 ( f[j-1] ).
+    cin >> n;
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> s[i];
+        add(s[i]);
+    }
+    cin >> x;
+    int sz = x.size();
+    x = ' ' + x;
+    f[0] = 1;
+    for (int i = 1; i <= sz; i++)
+    {
+        int vt = 1;
+        for (int j = i; j >= 1; j--)
+        {
+            if ( !trie[vt][x[j]-'a'+1] ) break; // nếu j..i không thuộc tập thì bỏ qua
+            vt = trie[vt][x[j]-'a'+1];
+            if ( d[vt] //kiểm tra nút vt có phải lá hay không ) f[i] = (f[i] + f[j-1])%mod;
+        }
+    }
+    cout << f[sz]%mod;
+}
+///===========================================

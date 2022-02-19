@@ -1,0 +1,52 @@
+///===========================================
+int n , m , a , b , d[300005] , s , t;
+vector<ii>g[300005];
+vector<int> tp;
+int sl[300005] , vt[300005];
+ll sldd[300005],kq[300005] , c;
+///===========================================
+void DFS(int x)
+{
+    d[x] = 1;
+    for(auto gt : g[x])
+        if ( !d[gt.se] ) DFS(gt.se);
+    tp.push_back(x);
+}
+///===========================================
+///===========================================
+///===========================================
+///===========================================
+///===========================================
+///===========================================
+int main()
+{
+    pk(); rose();
+    cin >> n >> m >> s >> t;
+    for (int i = 1; i <= m; i++)
+    {
+        cin >> a >> b >> c;
+        g[a].push_back({c,b});
+    }
+    for (int i = 1; i <= n; i++)
+        if (!d[i]) DFS(i);
+    reverse(tp.begin(),tp.end());
+    int vitri = 0;
+    for (auto gt : tp)
+        vt[gt] = ++vitri;
+    if ( vt[s] >= vt[t] ) { cout <<"NO PATH\n0"; return 0; } // ko có đường đi
+
+    sldd[t] = 1;
+    for (int i = 1; i <= n; i++)
+        kq[tp[i-1]] = -md;
+    kq[t] = 0;
+
+    for (int i = n; i >= 1; i--)
+        for (auto gt : g[tp[i-1]])
+        {
+            kq[tp[i-1]] = max (kq[tp[i-1]] , kq[gt.se] + gt.fi);
+            sldd[tp[i-1]] = (sldd[tp[i-1]] + sldd[gt.se])%mod;
+        }
+    //cout <<"\n";
+    cout << kq[s] <<"\n"<< sldd[s]%mod;
+}
+///===========================================

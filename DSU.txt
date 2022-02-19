@@ -1,0 +1,29 @@
+int tim(int x)
+{
+    return (x == pr[x]) ? x : pr[x]=tim(pr[x]);
+}
+///===========================================
+bool join(int x,int y)
+{
+    x = tim(x); y = tim(y);
+    if ( x != y )
+    {
+        if ( sl[x] > sl[y] )
+        {
+            sl[x] += sl[y];
+            pr[y] = x;
+        }
+        else
+        {
+            sl[y] += sl[x];
+            pr[x] = y;
+        }
+        return true;
+    }
+    return false;
+}
+///===========================================
+bool sx(info gt1,info gt2)
+{
+    return gt1.ts < gt2.ts;
+}

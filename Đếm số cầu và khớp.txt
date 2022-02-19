@@ -1,0 +1,49 @@
+///===========================================
+int n , m , u[50005] , v[50005];
+int khop = 0, cau = 0;//khớp, cầu
+int check[100005];// kiểm tra nút i có phải là khớp hay không
+int Num[100005], Low[100005], Time = 0; // Num[i] là thời gian bắt đầu thăm nút i
+//Low[i] : Low[i] là min của tất cả các Num[x] mà từ i đi đc tới x
+vector<int>g[100005];
+///===========================================
+void visit(int u, int p)
+{
+    int NumChild = 0;
+    Low[u] = Num[u] = ++Time;
+    for (int gt : g[u])
+        if (gt != p)
+        {
+            if (Num[gt] != 0) Low[u] = min(Low[u], Num[gt]);
+            else
+            {
+                visit(gt,u);
+                NumChild++;
+                Low[u] = min(Low[u], Low[gt]);
+                if (Low[gt] >= Num[gt]) cau++;
+
+                if (u == p && NumChild >= 2)
+                    check[u] = 1;
+                else if ( u != p && Low[gt] >= Num[u])
+                    check[u] = 1;
+            }
+        }
+}
+///===========================================
+int main()
+{
+    pk(); rose();
+    cin >> n >> m;
+    for (int i = 1; i <= m; i++)
+    {
+        cin >> u[i] >> v[i];
+        g[u[i]].push_back(v[i]);
+        g[v[i]].push_back(u[i]);
+    }
+    for (int i = 1; i <= n; i++)
+        if ( !Num[i] ) visit(i,i);
+
+    for (int i = 1; i <= n; i++)
+        if ( check[i] ) khop ++;
+    cout << khop <<" "<< cau;
+}
+///===========================================

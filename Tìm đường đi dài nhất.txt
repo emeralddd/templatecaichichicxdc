@@ -1,0 +1,12 @@
+int DFS(int u)
+{
+    if (f[u] != 0) return f[u];
+    for (auto gt : g[u])
+        f[u] = max ( f[u] , DFS(gt) + 1 );
+    return f[u];
+}
+///===========================================
+for (int i = 1; i <= n; i++)
+        maxx = max ( maxx , DFS(i) );
+    cout << maxx;
+// đồ thị có hướng không có chu trình

@@ -1,0 +1,31 @@
+///===========================================
+ld kcd(il da,il db)
+{
+    return (da.fi-db.fi)*(da.fi-db.fi) + (da.se-db.se)*(da.se-db.se);
+}
+///===========================================
+ld tinh(int di1,int di2)
+{
+    //cout << di1 <<" "<< di2 <<"///\n";
+    ld ans = md;
+    for (int i = 1; i < m[di1]; i++)
+    {
+        for (int j = 1; j < m[di2]; j++)
+        {
+            ld ab = kcd({x[di1][i],y[di1][i]},{x[di2][j],y[di2][j]}),
+               ac = kcd({x[di1][i],y[di1][i]},{x[di2][j+1],y[di2][j+1]}),
+               bc = kcd({x[di2][j],y[di2][j]},{x[di2][j+1],y[di2][j+1]});
+            //cout << ab <<" "<< ac <<" "<< bc <<"//\n";
+            if ( (ac > (ab + bc)) || (ab > (ac + bc)) )
+            {
+                ans = min ({ ans , sqrt(ab) , sqrt(ac) });
+                //cout <<"..\n";
+                continue;
+            }
+            ll a1 = (y[di2][j]-y[di2][j+1]) , b1 = x[di2][j+1]-x[di2][j] , c1 = a1*(-x[di2][j]) + b1*(-y[di2][j]);
+            ld kcx = abs(a1*x[di1][i]+b1*y[di1][i]+c1)/sqrt(a1*a1+b1*b1);
+            ans = min ( ans , kcx );
+        }
+    }
+    return ans;
+}

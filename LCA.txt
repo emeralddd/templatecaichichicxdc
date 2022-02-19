@@ -1,0 +1,58 @@
+int pr[nmax+5] , h[nmax+5] , d[nmax+5];
+///===========================================
+int DFS(int x)
+{
+    d[x] = 1;
+    for (auto gt : g[x])
+        if ( d[gt] == 0 )
+        {
+            h[gt] = h[x] + 1;
+            pr[0][gt] = x;
+            DFS(gt);
+        }
+}
+///===========================================
+int lca(int x,int y)
+{
+    //Gọi h(u) là độ cao của nút u.
+    //Để tính LCA(u,v), giả sử h(u)>h(v), đầu tiên ta tìm u′ là tổ tiên của u và có h(u′)=h(v)
+    if(h[x] < h[y]) swap(x,y); 
+    
+    //Rõ ràng, ta cần nhảy từ u lên cha thứ h(u)−h(v). 
+    //Ta chuyển h(u)−h(v) sang hệ 2. 
+    //Duyệt j từ log(h(u)) xuống 0, nếu tổ tiên thứ 2^j của u không cao hơn v thì ta cho p nhảy lên tổ tiên thứ 2^j của nó.
+    for(int k = 19; k >= 0; k--)
+        if( (h[x] - (1<<k)) >= h[y])
+             x = pr[k][x];
+    
+    //Sau khi u và v đã ở cùng tầng, ta sẽ tính LCA(u,v): 
+    //cũng như trên, ta sẽ duyệt j từ log(h(u)) xuống 0, 
+    //nếu tổ tiên thứ 2^j của u và v khác nhau thì chắc chắn LCA(u,v) sẽ ở cao hơn, 
+    //khi đó ta sẽ cho cả u và v nhảy lên tổ tiên thứ 2j của nó. 
+    //Cuối cùng thì u và v sẽ có cùng cha, vậy nên khi đó LCA(u,v)=T[u]=T[v].
+    if(x == y) return x;
+    for(int k = 19; k >= 0; k--)
+        if(pr[k][x] != 0 && pr[k][x] != pr[k][y])
+        {
+            x = pr[k][x];
+            y = pr[k][y];
+        }
+    while(x != y)
+    {
+        x = pr[0][x];
+        y = pr[0][y];
+    }
+    return x;
+}
+///===========================================
+int main()
+{
+    pk();rose();
+    // k là số bit
+    DFS(goc);
+    for (int k = 1; k <= 16; k++)
+        for (int i = 1; i <= n; i++)
+            pr[k][i] = pr[k-1][pr[k-1][i]];
+    //pr[i][j] : là tổ tiên thứ 2^i của j 
+}
+///===========================================

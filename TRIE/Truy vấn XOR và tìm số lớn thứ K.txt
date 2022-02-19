@@ -1,0 +1,90 @@
+
+//https://oj.vnoi.info/problem/voxor
+
+///===========================================
+int n , a , node = 1  , k , tv = 0 , q;
+string x;
+int f[3000005], trie[3000005][3] , d[3000005];
+///===========================================
+void add(int z)
+{
+    int vt = 1;
+    for (int i = 30; i >= 0; i--)
+    {
+        if (!trie[vt][(z>>i)&1]) trie[vt][(z>>i)&1] = ++node;
+        vt = trie[vt][(z>>i)&1];
+    }
+    d[vt] ++;
+}
+///===========================================
+void cb(int vv)
+{
+    for (int i = 0; i <= 1; i++)
+        if ( trie[vv][i] )
+        {
+            cb(trie[vv][i]);
+            f[vv] += f[trie[vv][i]];
+        }
+    f[vv] += d[vv];
+}
+///===========================================
+int tim(int vv)
+{
+    int vt = 1 , so = 0;
+    for (int i = 30; i >= 0; i--)
+    {
+        int b1 = 1^((tv>>i)&1); // Tìm bit hiện tại của đường bit 1 của cây trie ban đầu
+        if ( b1 == 1 ) // Đường bit 1 không đổi
+        { 
+            if ( f[trie[vt][1]] >= vv ) // ưu tiên đi bit 1
+            {
+                //cout << i <<" ";
+                so += (1<<i);
+                vt = trie[vt][1];
+            }
+            else
+            {
+                vv -= f[trie[vt][1]];
+                vt = trie[vt][0];
+            }
+        }
+        else // Đảo ngược 
+        {
+            if ( f[trie[vt][0]] >= vv ) // ưu tiên đi bit 1 (vì đường bit 0 ban đầu giờ là bit 1)
+            {
+                so += (1<<i);
+                vt = trie[vt][0];
+            }
+            else
+            {
+                vv -= f[trie[vt][0]];
+                vt = trie[vt][1];
+            }
+        }
+    }
+    return so;
+}
+///===========================================
+///===========================================
+///===========================================
+int main()
+{
+    pk(); rose();
+    cin >> n >> q;
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> a;
+        add(a);
+    }
+    cb(1);
+    while ( q -- )
+    {
+        cin >> x >> k;
+        if ( x == "XOR" ) tv ^= k;
+        else
+        {
+            cout << tim(k) <<"\n";
+        }
+    }
+}
+///===========================================
