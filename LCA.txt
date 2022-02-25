@@ -1,4 +1,4 @@
-int pr[nmax+5] , h[nmax+5] , d[nmax+5];
+int pr[25][nmax+5] , h[nmax+5] , d[nmax+5];
 ///===========================================
 int DFS(int x)
 {
@@ -21,7 +21,7 @@ int lca(int x,int y)
     //Rõ ràng, ta cần nhảy từ u lên cha thứ h(u)−h(v). 
     //Ta chuyển h(u)−h(v) sang hệ 2. 
     //Duyệt j từ log(h(u)) xuống 0, nếu tổ tiên thứ 2^j của u không cao hơn v thì ta cho p nhảy lên tổ tiên thứ 2^j của nó.
-    for(int k = 19; k >= 0; k--)
+    for(int k = 20; k >= 0; k--)
         if( (h[x] - (1<<k)) >= h[y])
              x = pr[k][x];
     
@@ -31,7 +31,7 @@ int lca(int x,int y)
     //khi đó ta sẽ cho cả u và v nhảy lên tổ tiên thứ 2j của nó. 
     //Cuối cùng thì u và v sẽ có cùng cha, vậy nên khi đó LCA(u,v)=T[u]=T[v].
     if(x == y) return x;
-    for(int k = 19; k >= 0; k--)
+    for(int k = 20; k >= 0; k--)
         if(pr[k][x] != 0 && pr[k][x] != pr[k][y])
         {
             x = pr[k][x];
@@ -50,7 +50,7 @@ int main()
     pk();rose();
     // k là số bit
     DFS(goc);
-    for (int k = 1; k <= 16; k++)
+    for (int k = 1; k <= 20; k++)
         for (int i = 1; i <= n; i++)
             pr[k][i] = pr[k-1][pr[k-1][i]];
     //pr[i][j] : là tổ tiên thứ 2^i của j 
